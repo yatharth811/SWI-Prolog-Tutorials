@@ -12,8 +12,8 @@ directTrain(metz,fahlquemont).
 directTrain(nancy,metz).
 
 % travelBetween(X, Y) :-  directTrain(X, Y);
-%                         directTrain(X, Z), travelBetween(Z, Y);
-%                         travelBetween(Y,X).
+%                         directTrain(X, Z), travelBetween(Z, Y).
+% travelBetween(X,Y):- travelBetween(Y,X).
 
 travelBetween(X,Y) :- directTrain(X,Y); directTrain(Y,X).
 travelBetween(X,Y) :-
