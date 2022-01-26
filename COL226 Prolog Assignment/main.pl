@@ -25,6 +25,12 @@ mydistinct([H | T], A, R) :-    member(H, A), mydistinct(T, A, R);
                                 not(member(H, A)), append(A, [H], Anew), mydistinct(T, Anew, R). 
 mydistinct(L, R) :- mydistinct(L, [], R).
 
+mydistinct2([], _, B, B).
+mydistinct2([H | T], A, B, R) :- not(member(H, A)), not(member(H, B)), mydistinct2(T, [H | A], B, R);
+                                 member(H, A), not(member(H, B)), mydistinct2(T, A, [H|B], R);
+                                 member(H, A), member(H, B), mydistinct2(T, A, B, R).
+
+mydistinct2(L, R) :- mydistinct2(L, [], [], S), reverse(S, R).
 
 
 myisSorted([_]).
@@ -94,19 +100,19 @@ eulerTour(ibt(empty), []).
 eulerTour(ibt(node(X, L, R)), E) :- eulerTour(ibt(L), A), eulerTour(ibt(R), B),  append([X|A], [X], Res1), append(B, [X], Res2), append(Res1, Res2, E).
 
 %10.
-preBT(BT, L) :- eulerTour(BT, R), mydistinct(R, L). 
+preET(BT, L) :- eulerTour(BT, R), mydistinct(R, L). 
 
 %11.
-% postBT()
+inET(BT, L) :- eulerTour(BT, R), mydistinct2(R, L).
 
 %12.
-
+postET(BT, L) :- eulerTour(BT, R), reverse(R,S), mydistinct(S, T), reverse(T, L).
 
 %13.
-% toString(ibt(empty), '\'()\'').
-% toString(ibt(node(X, L, R)), Res) :- toString(ibt(L), A), toString(ibt(R), B), atom_string((X, A, B), Res).
-
-% toString(ibt(node(X, L, R)), Res) :- toString2(ibt(node(X, L, R)), Res2), atom_string(Res2, Res).
+toString(ibt(empty), "()").
+toString(ibt(node(X, L, R)), Res) :- toString(ibt(L), A), toString(ibt(R), B), atom_string(X, String)
+,string_concat("(",String, String1), string_concat(String1, ", ", String2), string_concat(String2, A, String3), 
+string_concat(String3, ", ", String4), string_concat(String4, B, String5), string_concat(String5, ")", Res).
 
 
 %14.
